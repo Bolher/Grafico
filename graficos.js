@@ -63,7 +63,7 @@ function plot() {
 
       type: 'surface',
 
-    },{
+    }, {
       x: x1,
       y: y1,
       z: z1,
@@ -79,7 +79,7 @@ function plot() {
       },
 
       type: 'surface',
-    },{
+    }, {
       x: x2,
       y: y2,
       z: z2,
@@ -140,7 +140,7 @@ function plot4() {
 
       row = figure[i];
 
-      if (row[' svid'] == ' 5' || row[' svid'] == ' 7') {
+      if (row[' svid'] == valor) {
 
         x.push(row[' svid']);
         y.push(row['time_utc']);
