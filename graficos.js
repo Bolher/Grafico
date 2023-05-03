@@ -15,7 +15,7 @@ function plot() {
     var cont = 0;
 
 
-    for (var i = 0; i < figure.length && cont < 100; i++) {
+    for (var i = 0; i < figure.length; i++) {
 
       row = figure[i];
 
@@ -193,20 +193,29 @@ function carregar() {
   d3.csv('PRU2_2023-02-28_2023-02-28_86c5708524cc0d5ad4e320acc8bc09d8.ismr', function (figure) {
 
     var combo = document.getElementById("box");
+    var svids = {};
 
     for (var i = 0; i < figure.length; i++) {
 
       row = figure[i];
 
-      if (row['time_utc'].includes("00:00:00")) {
+      var svid = row[' svid'];
 
-        var opt = document.createElement("option");
-
-        opt.text = "satelite" + row[' svid'];
-
-        combo.add(opt, combo.options[i]);
-
+      if (!svids[svid]) {
+        svids[svid] = true;
       }
+    } 
+
+    var sortedSvids = Object.keys(svids).sort(function(a, b) {
+      return a - b;
+    });
+
+    for (var i = 0; i < sortedSvids.length; i++) {
+      var svid = sortedSvids[i];
+      var opt = document.createElement("option");
+      opt.text = "satelite" + svid;
+      combo.add(opt);
     }
+
   });
 }
