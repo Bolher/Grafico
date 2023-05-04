@@ -12,38 +12,61 @@ function plot() {
     var x1 = [], y1 = [], z1 = [];
     var x2 = [], y2 = [], z2 = [];
 
-    var cont = 0;
+    const select = document.getElementById("box");
+    var selecionados = Array.from(select.selectedOptions, option => option.value);
 
+
+    var valor1 = selecionados[0];
+    if (valor1 != null) {
+      var teste1 = valor1.substring(8, 13);
+    }
+    var valor2 = selecionados[1];
+    if (valor2 != null) {
+      var teste2 = valor2.substring(8, 13);
+    }
+    var valor3 = selecionados[2];
+    if (valor3 != null) {
+      var teste3 = valor3.substring(8, 13);
+    }
+
+    console.log(teste1)
+    console.log(teste2)
+    console.log(teste3)
 
     for (var i = 0; i < figure.length; i++) {
 
       row = figure[i];
 
-      if (row[' svid'] == ' 5') {
+      if (teste1 != null) {
 
-        x.push(row[' svid']);
-        y.push(row['time_utc']);
-        z.push(row[' s4']);
+        if (row[' svid'] == teste1) {
 
-        cont++;
+          x.push(row[' svid']);
+          y.push(row['time_utc']);
+          z.push(row[' s4']);
+
+        }
       }
 
-      if (row[' svid'] == ' 7') {
+      if (teste2 != null) {
 
-        x1.push(row[' svid']);
-        y1.push(row['time_utc']);
-        z1.push(row[' s4']);
+        if (row[' svid'] == teste2) {
 
-        cont++;
+          x1.push(row[' svid']);
+          y1.push(row['time_utc']);
+          z1.push(row[' s4']);
+
+        }
       }
 
-      if (row[' svid'] == ' 9') {
+      if (teste3 != null) {
+        if (row[' svid'] == teste3) {
 
-        x2.push(row[' svid']);
-        y2.push(row['time_utc']);
-        z2.push(row[' s4']);
+          x2.push(row[' svid']);
+          y2.push(row['time_utc']);
+          z2.push(row[' s4']);
 
-        cont++;
+        }
       }
     }
     var data = [{
@@ -116,79 +139,6 @@ function plot() {
   });
 }
 
-function plot4() {
-
-  var novaDiv = document.createElement("div");
-  novaDiv.id = 'grafico'
-
-  var body = document.querySelector("body");
-  body.appendChild(novaDiv);
-
-  d3.csv('PRU2_2023-02-28_2023-02-28_86c5708524cc0d5ad4e320acc8bc09d8.ismr', function (figure) {
-
-    var valor = document.getElementById("box").value;
-
-    valor = valor.substring(8, 13);
-
-
-    var x = [], y = [], z = [];
-
-    var cont = 0;
-
-
-    for (var i = 0; i < figure.length && cont < 100; i++) {
-
-      row = figure[i];
-
-      if (row[' svid'] == valor) {
-
-        x.push(row[' svid']);
-        y.push(row['time_utc']);
-        z.push(row[' s4']);
-
-        cont++;
-      }
-
-
-    }
-
-    var data = [{
-      x: x,
-      y: y,
-      z: z,
-
-      mode: 'markers',
-      marker: {
-        size: 20,
-        color: [1.0, 0.5, 0.0, 1.0],
-        colorscale: 'Viridis',
-        colorbar: {
-          title: 'Colorbar Title'
-        }
-      },
-
-      type: 'surface',
-      showscale: false,
-
-    }]
-
-    var layout = {
-      title: 'ISMR Querry Tool',
-      autosize: true,
-      width: 600,
-      height: 600,
-      scene: {
-        xaxis: { title: 'svid' },
-        yaxis: { title: 'time' },
-        zaxis: { title: 's4' }
-      },
-
-    };
-
-    Plotly.newPlot('grafico', data, layout, { renderer: 'webgl' });
-  });
-}
-
 function carregar() {
   d3.csv('PRU2_2023-02-28_2023-02-28_86c5708524cc0d5ad4e320acc8bc09d8.ismr', function (figure) {
 
@@ -204,9 +154,9 @@ function carregar() {
       if (!svids[svid]) {
         svids[svid] = true;
       }
-    } 
+    }
 
-    var sortedSvids = Object.keys(svids).sort(function(a, b) {
+    var sortedSvids = Object.keys(svids).sort(function (a, b) {
       return a - b;
     });
 
