@@ -1,45 +1,47 @@
+//função para gerar o grafico
 function plot() {
   d3.csv('PRU2_2023-02-28_2023-02-28_86c5708524cc0d5ad4e320acc8bc09d8.ismr', function (figure) {
 
+    //criando e colocando id na div onde o grafico vai ser gerado
     var novaDiv = document.createElement("div");
     novaDiv.id = 'grafico'
 
     var body = document.querySelector("body");
     body.appendChild(novaDiv);
 
-
+    //vetores para cada satelite sendo possivel no maximo 3 satelites
     var x = [], y = [], z = [];
     var x1 = [], y1 = [], z1 = [];
     var x2 = [], y2 = [], z2 = [];
 
+    //pegando os valroes do <select> e gardando em uma array
     const select = document.getElementById("box");
     var selecionados = Array.from(select.selectedOptions, option => option.value);
 
+    //pegando o numero de cada satelite que foi escolhindo, sendo usando a substring para pegar apenas o numero do satelite
+    var satelite1 = selecionados[0];
+    if (satelite1 != null) {
+      var numeroSatelite1 = satelite1.substring(8, 13);
+    }
+    var satelite2 = selecionados[1];
+    if (satelite2 != null) {
+      var numeroSatelite2 = satelite2.substring(8, 13);
+    }
+    var satelite3 = selecionados[2];
+    if (satelite3 != null) {
+      var numeroSatelite3 = satelite3.substring(8, 13);
+    }
 
-    var valor1 = selecionados[0];
-    if (valor1 != null) {
-      var teste1 = valor1.substring(8, 13);
-    }
-    var valor2 = selecionados[1];
-    if (valor2 != null) {
-      var teste2 = valor2.substring(8, 13);
-    }
-    var valor3 = selecionados[2];
-    if (valor3 != null) {
-      var teste3 = valor3.substring(8, 13);
-    }
-
-    console.log(teste1)
-    console.log(teste2)
-    console.log(teste3)
 
     for (var i = 0; i < figure.length; i++) {
 
       row = figure[i];
 
-      if (teste1 != null) {
+      // vendo se foi selecionado o primeiro satelite caso tenha sido ele pela os valores das colunas do csv(' svid', 'time_utc', ' s4')
+      // o coloca nos vetores do satelite1
+      if (numeroSatelite1 != null) {
 
-        if (row[' svid'] == teste1) {
+        if (row[' svid'] == numeroSatelite1) {
 
           x.push(row[' svid']);
           y.push(row['time_utc']);
@@ -47,10 +49,11 @@ function plot() {
 
         }
       }
+      // vendo se foi selecionado um segundo satelite caso tenha sido ele pela os valores das colunas do csv(' svid', 'time_utc', ' s4')
+      // o coloca nos vetores do satelite2
+      if (numeroSatelite2 != null) {
 
-      if (teste2 != null) {
-
-        if (row[' svid'] == teste2) {
+        if (row[' svid'] == numeroSatelite2) {
 
           x1.push(row[' svid']);
           y1.push(row['time_utc']);
@@ -58,9 +61,10 @@ function plot() {
 
         }
       }
-
-      if (teste3 != null) {
-        if (row[' svid'] == teste3) {
+      // vendo se foi selecionado um terceiro satelite caso tenha sido ele pela os valores das colunas do csv(' svid', 'time_utc', ' s4')
+      // o coloca nos vetores do satelite3
+      if (numeroSatelite3 != null) {
+        if (row[' svid'] == numeroSatelite3) {
 
           x2.push(row[' svid']);
           y2.push(row['time_utc']);
@@ -70,6 +74,7 @@ function plot() {
       }
     }
     var data = [{
+      //gera o grafico com base nas informações do vetor do satelite 1
       x: x,
       y: y,
       z: z,
@@ -87,6 +92,7 @@ function plot() {
       type: 'surface',
 
     }, {
+      //gera o grafico com base nas informações do satelite 3
       x: x1,
       y: y1,
       z: z1,
@@ -103,6 +109,7 @@ function plot() {
 
       type: 'surface',
     }, {
+      //gera o grafico com base nas informações do vetor do satelite 3
       x: x2,
       y: y2,
       z: z2,
@@ -120,6 +127,7 @@ function plot() {
       type: 'surface',
     }];
 
+    //define as informações padrões do layout do grafico
     var layout = {
 
       title: 'grafico',
@@ -134,32 +142,39 @@ function plot() {
       }
     };
 
+    //executa o plot do grafico
     Plotly.newPlot('grafico', data, layout);
 
   });
 }
 
+//função para carregar o <select> 
 function carregar() {
   d3.csv('PRU2_2023-02-28_2023-02-28_86c5708524cc0d5ad4e320acc8bc09d8.ismr', function (figure) {
 
     var combo = document.getElementById("box");
     var svids = {};
 
+    //faz um for do tamanho do csv
     for (var i = 0; i < figure.length; i++) {
 
+      // pega cada linha do csv e coloca na varial 'row' uma vez por cada laço
       row = figure[i];
 
+      //pega o valor do campo ' svid' do csv e coloca na varialvel 'svid'
       var svid = row[' svid'];
-
+      // verifica se o satelite já esta na array caso não esteja adiciona caso esteija ele não adiciona
       if (!svids[svid]) {
         svids[svid] = true;
       }
     }
 
+    //ordena a lista dos satelites em ordem crecente
     var sortedSvids = Object.keys(svids).sort(function (a, b) {
       return a - b;
     });
 
+    //coloca cada valor da lista ordenada no <select>
     for (var i = 0; i < sortedSvids.length; i++) {
       var svid = sortedSvids[i];
       var opt = document.createElement("option");
