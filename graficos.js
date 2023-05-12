@@ -5,17 +5,24 @@ function plot() {
     //criando e colocando id na div onde o grafico vai ser gerado
     var novaDiv = document.createElement("div");
     novaDiv.id = 'grafico'
+    novaDiv.classList.add("col-lg-6")
+    novaDiv.classList.add("col-sm-12")
 
     var body = document.querySelector("body");
     body.appendChild(novaDiv);
 
-    //vetores para cada satelite sendo possivel no maximo 3 satelites
-    var x = [], y = [], z = [];
-    var x1 = [], y1 = [], z1 = [];
-    var x2 = [], y2 = [], z2 = [];
+    //pegando o valor do atributo em que vai ser realizado o plot
+    var atributo = document.getElementById("atributo")
+    atributo = atributo.options[atributo.selectedIndex].value
+    atributo = " " + atributo
+
+    //uma lista de lista, e cada lista represneta as cordenadas de um satelite sendo possivel no maximo 3 satelites, cada lista representa a cordenada x, y e z do plano carteziano
+    var cordenadas= [x=[], y=[], z=[],
+                     x1=[], y1=[], z1=[],
+                     x2=[], y2=[], z2=[]];
 
     //pegando os valroes do <select> e gardando em uma array
-    const select = document.getElementById("box");
+    const select = document.getElementById("satelites");
     var selecionados = Array.from(select.selectedOptions, option => option.value);
 
     //pegando o numero de cada satelite que foi escolhindo, sendo usando a substring para pegar apenas o numero do satelite
@@ -32,7 +39,6 @@ function plot() {
       var numeroSatelite3 = satelite3.substring(8, 13);
     }
 
-
     for (var i = 0; i < figure.length; i++) {
 
       row = figure[i];
@@ -43,9 +49,9 @@ function plot() {
 
         if (row[' svid'] == numeroSatelite1) {
 
-          x.push(row[' svid']);
-          y.push(row['time_utc']);
-          z.push(row[' s4']);
+          cordenadas[0].push(row[' svid']);
+          cordenadas[1].push(row['time_utc']);
+          cordenadas[2].push(row[atributo]);
 
         }
       }
@@ -55,9 +61,9 @@ function plot() {
 
         if (row[' svid'] == numeroSatelite2) {
 
-          x1.push(row[' svid']);
-          y1.push(row['time_utc']);
-          z1.push(row[' s4']);
+          cordenadas[3].push(row[' svid']);
+          cordenadas[4].push(row['time_utc']);
+          cordenadas[5].push(row[atributo]);
 
         }
       }
@@ -66,19 +72,20 @@ function plot() {
       if (numeroSatelite3 != null) {
         if (row[' svid'] == numeroSatelite3) {
 
-          x2.push(row[' svid']);
-          y2.push(row['time_utc']);
-          z2.push(row[' s4']);
+          cordenadas[6].push(row[' svid']);
+          cordenadas[7].push(row['time_utc']);
+          cordenadas[8].push(row[atributo]);
 
         }
       }
     }
+
     var data = [{
       //gera o grafico com base nas informações do vetor do satelite 1
-      x: x,
-      y: y,
-      z: z,
-
+      x: cordenadas[0],
+      y: cordenadas[1],
+      
+      z: cordenadas[2],
       mode: 'markers',
       marker: {
         size: 20,
@@ -93,9 +100,9 @@ function plot() {
 
     }, {
       //gera o grafico com base nas informações do satelite 3
-      x: x1,
-      y: y1,
-      z: z1,
+      x: cordenadas[3],
+      y: cordenadas[4],
+      z: cordenadas[5],
 
       mode: 'markers',
       marker: {
@@ -110,9 +117,9 @@ function plot() {
       type: 'surface',
     }, {
       //gera o grafico com base nas informações do vetor do satelite 3
-      x: x2,
-      y: y2,
-      z: z2,
+      x: cordenadas[6],
+      y: cordenadas[7],
+      z: cordenadas[8],
 
       mode: 'markers',
       marker: {
@@ -136,9 +143,9 @@ function plot() {
       width: 600,
       height: 600,
       scene: {
-        xaxis: { title: 'svid' },
-        yaxis: { title: 'time_utc' },
-        zaxis: { title: 's4' }
+        xaxis: { title: 'Svid' },
+        yaxis: { title: 'Time_utc' },
+        zaxis: { title: 'Atributo' }
       }
     };
 
@@ -152,7 +159,7 @@ function plot() {
 function carregar() {
   d3.csv('PRU2_2023-02-28_2023-02-28_86c5708524cc0d5ad4e320acc8bc09d8.ismr', function (figure) {
 
-    var combo = document.getElementById("box");
+    var combo = document.getElementById("satelites");
     var svids = {};
 
     //faz um for do tamanho do csv
@@ -175,12 +182,12 @@ function carregar() {
     });
 
     //coloca cada valor da lista ordenada no <select>
-    for (var i = 0; i < sortedSvids.length; i++) {
+    // i< sortedSvids.length
+    for (var i = 0; i < 20; i++) {
       var svid = sortedSvids[i];
       var opt = document.createElement("option");
       opt.text = "satelite" + svid;
       combo.add(opt);
     }
-
   });
 }
