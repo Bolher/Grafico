@@ -8,9 +8,7 @@
     <title>Document</title>
 
     <script src="graficos.js"></script>
-
     <script src='https://cdn.plot.ly/plotly-2.18.0.min.js'></script>
-
     <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
 
     <!-- BootStrap V5.3-->
@@ -28,29 +26,27 @@
 <body id="body">
 
     <form class="row">
-
         <div class="col-md-2 mb-3">
-            <label class="form-label"> selecione o(S) satelite(S)</label>
-            <br>    
+            <label class="form-label">Selecione o(s) Satélite(s)</label>
+            <br>
             <select id="satelites" class="form-select" aria-label="Default select example" multiple onchange="plot()"></select>
-            <div id="maximoSatelite" class="form-text">No maximo 3 satelites.</div>
+            <div id="maximoSatelite" class="form-text">No máximo 3 satélites.</div>
         </div>
 
         <div class="col-md-2 mb-3">
-            <label class="form-label"> Atributo do plot</label>
-            <br>    
+            <label class="form-label">Atributo do Plot</label>
+            <br>
             <select id="atributo" class="form-select" aria-label="Default select example" onchange="plot()">
-                <option> elev </option>
-                <option> s4 </option>
-                <option> phi60l1 </option>
+                <option>elev</option>
+                <option>s4</option>
+                <option>phi60l1</option>
             </select>
             <div id="maximoAtributo" class="form-text">Selecione o atributo do Plot.</div>
         </div>
 
         <div>
-            <button type="button" class="btn btn-primary " onclick="carregar()"> carregar </button>
+            <button type="button" class="btn btn-primary" onclick="carregar()">Carregar</button>
         </div>
-        
     </form>
 
 </body>
